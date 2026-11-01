@@ -38,9 +38,9 @@ const seedDatabase = async () => {
   const originalToken = IS_DEVELOPMENT ? 'dev' : randomUUIDv7();
 
   const initialSettings: TISettings = {
-    name: 'Caesar Server',
+    name: 'Neocordia Server',
     description:
-      'This is the default Caesar server description. Change me in the server settings!',
+      'This is the default Neocordia server description. Change me in the server settings!',
     serverId: randomUUIDv7(),
     secretToken: sha256(originalToken),
     directMessagesEnabled: true,

@@ -21,7 +21,7 @@ import { IS_DEVELOPMENT } from './env';
 const SITE = parseSite(process.env.CAESAR_SITE);
 
 const RP_ID = SITE.host;
-const RP_NAME = process.env.CAESAR_WEBAUTHN_RPNAME ?? 'Caesar';
+const RP_NAME = process.env.CAESAR_WEBAUTHN_RPNAME ?? 'Neocordia';
 // Dev also accepts the vite origin so :5173 and :8443 are interchangeable.
 const EXPECTED_ORIGIN = IS_DEVELOPMENT
   ? [SITE.origin, 'http://localhost:5173']

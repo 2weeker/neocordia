@@ -20,7 +20,7 @@ type TShareOptions = {
   invite: boolean;
 };
 
-const APP_NAME = 'Caesar';
+const APP_NAME = 'Neocordia';
 const THEME_COLOR = '#171717';
 
 const ESCAPES: Record<string, string> = {

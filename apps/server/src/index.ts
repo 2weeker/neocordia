@@ -26,7 +26,7 @@ await initGames();
 const host = IS_PRODUCTION ? SERVER_PRIVATE_IP : 'localhost';
 const url = `http://${host}:${config.server.port}/`;
 
-logger.info(`Caesar v${SERVER_VERSION} ready at ${url}`);
+logger.info(`Neocordia v${SERVER_VERSION} ready at ${url}`);
 
 enqueueActivityLog({
   type: ActivityLogType.SERVER_STARTED
