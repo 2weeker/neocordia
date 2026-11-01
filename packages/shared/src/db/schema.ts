@@ -51,6 +51,10 @@ const settings = sqliteTable(
     logoId: integer('logo_id').references(() => files.id, {
       onDelete: 'set null'
     }),
+    // link-preview image (og:image); public like the logo
+    shareBannerId: integer('share_banner_id').references(() => files.id, {
+      onDelete: 'set null'
+    }),
     directMessagesEnabled: integer('direct_messages_enabled', {
       mode: 'boolean'
     }).notNull(),

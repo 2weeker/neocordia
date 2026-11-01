@@ -29,15 +29,21 @@ const readSettings = async (): Promise<Readonly<TJoinedSettings>> => {
     throw new Error('Server settings row missing');
   }
 
-  const logo = serverSettings.logoId
-    ? await fileByIdQuery().get({ id: serverSettings.logoId })
-    : undefined;
+  const [logo, shareBanner] = await Promise.all([
+    serverSettings.logoId
+      ? fileByIdQuery().get({ id: serverSettings.logoId })
+      : undefined,
+    serverSettings.shareBannerId
+      ? fileByIdQuery().get({ id: serverSettings.shareBannerId })
+      : undefined
+  ]);
 
   // shared by every caller: freeze so a stray mutation throws instead of
   // leaking into the next request
   return Object.freeze({
     ...serverSettings,
-    logo: logo ? Object.freeze(logo) : null
+    logo: logo ? Object.freeze(logo) : null,
+    shareBanner: shareBanner ? Object.freeze(shareBanner) : null
   });
 };
 

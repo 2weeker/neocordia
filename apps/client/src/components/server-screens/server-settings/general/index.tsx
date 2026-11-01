@@ -14,10 +14,19 @@ import {
 } from '@caesar/ui';
 import { memo } from 'react';
 import { LogoManager } from './logo-manager';
+import { ShareBannerManager } from './share-banner-manager';
 
 const General = memo(() => {
-    const { settings, logo, loading, onChange, submit, errors, refetch } =
-        useAdminGeneral();
+    const {
+        settings,
+        logo,
+        shareBanner,
+        loading,
+        onChange,
+        submit,
+        errors,
+        refetch
+    } = useAdminGeneral();
 
     if (loading) {
         return <LoadingCard className="h-[600px]" />;
@@ -54,6 +63,10 @@ const General = memo(() => {
                 </Group>
 
                 <LogoManager logo={logo} refetch={refetch} />
+                <ShareBannerManager
+                    shareBanner={shareBanner}
+                    refetch={refetch}
+                />
 
                 <Group
                     label="Enable Direct Messages"

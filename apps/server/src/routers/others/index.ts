@@ -1,5 +1,6 @@
 import { t } from '@server/utils/trpc';
 import { changeLogoRoute } from './change-logo';
+import { changeShareBannerRoute } from './change-share-banner';
 import { onServerSettingsUpdateRoute } from './events';
 import { getBankBalanceRoute } from './get-bank-balance';
 import { getGameHistoryRoute } from './get-game-history';
@@ -18,6 +19,7 @@ export const othersRouter = t.router({
   ping: pingRoute,
   updateSettings: updateSettingsRoute,
   changeLogo: changeLogoRoute,
+  changeShareBanner: changeShareBannerRoute,
   getSettings: getSettingsRoute,
   onServerSettingsUpdate: onServerSettingsUpdateRoute,
   useSecretToken: useSecretTokenRoute,

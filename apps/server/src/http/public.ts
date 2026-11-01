@@ -112,13 +112,16 @@ const publicRouteHandler = async (
     return;
   }
 
-  // server logo is the only truly public file (shown on login screen)
-  const isServerLogo = (await getSettings()).logoId === dbFile.id;
+  // the only truly public files: the logo (login screen) and the share
+  // banner (link-preview crawlers can't sign in)
+  const { logoId, shareBannerId } = await getSettings();
+  const isPublicServerImage =
+    logoId === dbFile.id || shareBannerId === dbFile.id;
 
   // Avatars, emojis and attachments arrive by the hundred after a join, so
   // the gate reads only what it decides on. Status order stays orphan 404,
   // then 401, then 403.
-  if (!isServerLogo) {
+  if (!isPublicServerImage) {
     const [channel, user] = await Promise.all([
       getFileChannel(dbFile.id),
       getSessionUserByToken(getSessionToken(req))
@@ -201,7 +204,9 @@ const publicRouteHandler = async (
     : 'attachment';
 
   // the logo is served pre-auth: keep the uploader's original name private
-  const dispositionName = isServerLogo ? dbFile.name : dbFile.originalName;
+  const dispositionName = isPublicServerImage
+    ? dbFile.name
+    : dbFile.originalName;
 
   // plain filename= is the ASCII fallback (filename* carries the real name):
   // Node rejects header chars outside latin1, so a CJK/emoji name 500'd

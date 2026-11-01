@@ -253,6 +253,13 @@
       "when": 1792051200000,
       "tag": "0035_channel_showcase",
       "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "6",
+      "when": 1792054800000,
+      "tag": "0036_share_banner",
+      "breakpoints": true
     }
   ]
 }

@@ -149,6 +149,7 @@ const FILE_REFERENCES = [
   emojis.fileId,
   messageReactions.fileId,
   settings.logoId,
+  settings.shareBannerId,
   sounds.fileId,
   statusImages.fileId
 ];

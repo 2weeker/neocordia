@@ -1,2 +1,14 @@
+# Search engines stay out. Link-preview bots may fetch pages so shared
+# links show the server name, description and banner (the HTML carries
+# Open Graph tags; the banner/logo are the only public images).
+User-agent: Twitterbot
+User-agent: Discordbot
+User-agent: Slackbot-LinkExpanding
+User-agent: TelegramBot
+User-agent: facebookexternalhit
+User-agent: WhatsApp
+User-agent: LinkedInBot
+Allow: /
+
 User-agent: *
 Disallow: /

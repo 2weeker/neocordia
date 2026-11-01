@@ -92,7 +92,8 @@ export const useAdminGeneral = () => {
         submit,
         errors,
         onChange,
-        logo: data?.logo ?? null
+        logo: data?.logo ?? null,
+        shareBanner: data?.shareBanner ?? null
     };
 };
 

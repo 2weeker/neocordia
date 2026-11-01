@@ -4,7 +4,10 @@ import type http from 'http';
 import mime from 'mime-types';
 import path from 'path';
 import zlib from 'zlib';
+import { getSettings } from '../db/queries/server';
+import { parseSite } from '../helpers/parse-site';
 import { INTERFACE_PATH } from '../helpers/paths';
+import { renderShareMeta } from '../helpers/share-meta';
 import { logger } from '../logger';
 import { IS_DEVELOPMENT, IS_TEST } from '../utils/env';
 import {
@@ -93,7 +96,10 @@ const statPrecompressed = (
   }
 };
 
-const interfaceRouteHandler = (
+// absolute base for og:image / og:url: crawlers need full URLs
+const SITE_ORIGIN = parseSite(process.env.CAESAR_SITE).origin;
+
+const interfaceRouteHandler = async (
   req: http.IncomingMessage,
   res: http.ServerResponse
 ) => {
@@ -151,7 +157,14 @@ const interfaceRouteHandler = (
 
   if (cleanSubPath === 'index.html') {
     try {
-      const html = fs.readFileSync(requestedPath, 'utf-8');
+      const html = renderShareMeta(
+        fs.readFileSync(requestedPath, 'utf-8'),
+        await getSettings(),
+        {
+          origin: SITE_ORIGIN,
+          invite: new URL(req.url ?? '/', 'http://x').searchParams.has('invite')
+        }
+      );
       const nonce = crypto.randomBytes(16).toString('base64');
       const nonced = html.replace(/<script/g, `<script nonce="${nonce}"`);
 
