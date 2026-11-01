@@ -55,6 +55,13 @@ const settings = sqliteTable(
     shareBannerId: integer('share_banner_id').references(() => files.id, {
       onDelete: 'set null'
     }),
+    // login/sign-up page only; public like the logo
+    loginBackgroundId: integer('login_background_id').references(
+      () => files.id,
+      { onDelete: 'set null' }
+    ),
+    // black overlay over it, percent (0-90)
+    loginBackgroundDim: integer('login_background_dim').notNull().default(60),
     directMessagesEnabled: integer('direct_messages_enabled', {
       mode: 'boolean'
     }).notNull(),

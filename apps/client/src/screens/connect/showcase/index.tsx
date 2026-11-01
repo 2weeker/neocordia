@@ -1,4 +1,5 @@
 import { useNow } from '@/hooks/use-now';
+import { cn } from '@/lib/utils';
 import type { TShowcaseItem } from '@caesar/shared';
 import { Paperclip } from 'lucide-react';
 import { memo, useMemo, useState } from 'react';
@@ -63,9 +64,15 @@ const Row = memo(({ item, text, now }: TRowProps) => {
 
 Row.displayName = 'ShowcaseRow';
 
+type TShowcaseFeedProps = {
+    // over a login background the bare text would sit on the photo: give
+    // the column its own translucent panel
+    onBackground?: boolean;
+};
+
 // Login-page preview of showcased channels. Everything arrives scrambled
 // from the server; the scroll and flicker are presentation only.
-const ShowcaseFeed = memo(() => {
+const ShowcaseFeed = memo(({ onBackground }: TShowcaseFeedProps) => {
     const items = useShowcaseFeed();
     const [paused, setPaused] = useState(false);
     const texts = useFlicker(items, paused);
@@ -91,7 +98,11 @@ const ShowcaseFeed = memo(() => {
     return (
         <aside
             aria-label="Scrambled preview of recent activity"
-            className="hidden w-80 lg:block"
+            className={cn(
+                'hidden w-80 lg:block',
+                onBackground &&
+                    'rounded-xl bg-card/75 px-4 shadow-2xl ring-1 ring-white/10 backdrop-blur-md'
+            )}
         >
             <div
                 className="showcase-viewport h-[min(34rem,75vh)] overflow-hidden"

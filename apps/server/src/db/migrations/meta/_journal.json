@@ -260,6 +260,13 @@
       "when": 1792054800000,
       "tag": "0036_share_banner",
       "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "6",
+      "when": 1792058400000,
+      "tag": "0037_login_background",
+      "breakpoints": true
     }
   ]
 }

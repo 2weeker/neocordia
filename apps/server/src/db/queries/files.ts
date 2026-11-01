@@ -150,6 +150,7 @@ const FILE_REFERENCES = [
   messageReactions.fileId,
   settings.logoId,
   settings.shareBannerId,
+  settings.loginBackgroundId,
   sounds.fileId,
   statusImages.fileId
 ];

@@ -342,9 +342,35 @@ const Connect = memo(() => {
         return '/logo.png';
     }, [info]);
 
+    const backgroundSrc = info?.loginBackground
+        ? getFileUrl(info.loginBackground)
+        : undefined;
+
     return (
-        <div className="flex flex-col gap-2 justify-center items-center h-full lg:flex-row lg:gap-12">
-            <Card className="w-full max-w-sm gap-2">
+        <div className="relative isolate flex flex-col gap-2 justify-center items-center h-full lg:flex-row lg:gap-12">
+            {backgroundSrc && (
+                // admin-set, login page only; the black layer's opacity is
+                // the dim so the card and feed stand out
+                <div aria-hidden="true" className="fixed inset-0 -z-10">
+                    <img
+                        src={backgroundSrc}
+                        alt=""
+                        className="h-full w-full object-cover"
+                    />
+                    <div
+                        className="absolute inset-0 bg-black"
+                        style={{
+                            opacity: (info?.loginBackgroundDim ?? 60) / 100
+                        }}
+                    />
+                </div>
+            )}
+            <Card
+                className={cn(
+                    'w-full max-w-sm gap-2',
+                    backgroundSrc && 'shadow-2xl'
+                )}
+            >
                 <CardHeader>
                     <CardTitle className="flex flex-col items-center gap-2 text-center">
                         <img
@@ -563,7 +589,7 @@ const Connect = memo(() => {
                     )}
                 </CardContent>
             </Card>
-            <ShowcaseFeed />
+            <ShowcaseFeed onBackground={!!backgroundSrc} />
         </div>
     );
 });

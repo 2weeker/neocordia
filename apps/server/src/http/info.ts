@@ -12,7 +12,11 @@ const infoRouteHandler = async (
   const info: TServerInfo = {
     name: settings.name,
     description: settings.description,
-    logo: settings.logo ? { name: settings.logo.name } : null
+    logo: settings.logo ? { name: settings.logo.name } : null,
+    loginBackground: settings.loginBackground
+      ? { name: settings.loginBackground.name }
+      : null,
+    loginBackgroundDim: settings.loginBackgroundDim
   };
 
   sendJson(res, 200, info);

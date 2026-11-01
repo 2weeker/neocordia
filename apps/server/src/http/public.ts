@@ -112,11 +112,14 @@ const publicRouteHandler = async (
     return;
   }
 
-  // the only truly public files: the logo (login screen) and the share
-  // banner (link-preview crawlers can't sign in)
-  const { logoId, shareBannerId } = await getSettings();
-  const isPublicServerImage =
-    logoId === dbFile.id || shareBannerId === dbFile.id;
+  // the only truly public files: the logo and login background (login
+  // screen) and the share banner (link-preview crawlers can't sign in)
+  const { logoId, shareBannerId, loginBackgroundId } = await getSettings();
+  const isPublicServerImage = [
+    logoId,
+    shareBannerId,
+    loginBackgroundId
+  ].includes(dbFile.id);
 
   // Avatars, emojis and attachments arrive by the hundred after a join, so
   // the gate reads only what it decides on. Status order stays orphan 404,

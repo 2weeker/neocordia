@@ -1,3 +1,4 @@
+export * from './login-background';
 export * from './metrics';
 export * from './permissions';
 export * from './retention';

@@ -29,12 +29,15 @@ const readSettings = async (): Promise<Readonly<TJoinedSettings>> => {
     throw new Error('Server settings row missing');
   }
 
-  const [logo, shareBanner] = await Promise.all([
+  const [logo, shareBanner, loginBackground] = await Promise.all([
     serverSettings.logoId
       ? fileByIdQuery().get({ id: serverSettings.logoId })
       : undefined,
     serverSettings.shareBannerId
       ? fileByIdQuery().get({ id: serverSettings.shareBannerId })
+      : undefined,
+    serverSettings.loginBackgroundId
+      ? fileByIdQuery().get({ id: serverSettings.loginBackgroundId })
       : undefined
   ]);
 
@@ -43,7 +46,8 @@ const readSettings = async (): Promise<Readonly<TJoinedSettings>> => {
   return Object.freeze({
     ...serverSettings,
     logo: logo ? Object.freeze(logo) : null,
-    shareBanner: shareBanner ? Object.freeze(shareBanner) : null
+    shareBanner: shareBanner ? Object.freeze(shareBanner) : null,
+    loginBackground: loginBackground ? Object.freeze(loginBackground) : null
   });
 };
 

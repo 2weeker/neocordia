@@ -1,4 +1,5 @@
 import { t } from '@server/utils/trpc';
+import { changeLoginBackgroundRoute } from './change-login-background';
 import { changeLogoRoute } from './change-logo';
 import { changeShareBannerRoute } from './change-share-banner';
 import { onServerSettingsUpdateRoute } from './events';
@@ -19,6 +20,7 @@ export const othersRouter = t.router({
   ping: pingRoute,
   updateSettings: updateSettingsRoute,
   changeLogo: changeLogoRoute,
+  changeLoginBackground: changeLoginBackgroundRoute,
   changeShareBanner: changeShareBannerRoute,
   getSettings: getSettingsRoute,
   onServerSettingsUpdate: onServerSettingsUpdateRoute,

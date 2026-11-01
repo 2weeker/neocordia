@@ -13,6 +13,7 @@ import {
     Textarea
 } from '@caesar/ui';
 import { memo } from 'react';
+import { LoginBackgroundManager } from './login-background-manager';
 import { LogoManager } from './logo-manager';
 import { ShareBannerManager } from './share-banner-manager';
 
@@ -21,6 +22,7 @@ const General = memo(() => {
         settings,
         logo,
         shareBanner,
+        loginBackground,
         loading,
         onChange,
         submit,
@@ -65,6 +67,12 @@ const General = memo(() => {
                 <LogoManager logo={logo} refetch={refetch} />
                 <ShareBannerManager
                     shareBanner={shareBanner}
+                    refetch={refetch}
+                />
+                <LoginBackgroundManager
+                    background={loginBackground}
+                    dim={settings.loginBackgroundDim}
+                    onDimChange={(dim) => onChange('loginBackgroundDim', dim)}
                     refetch={refetch}
                 />
 

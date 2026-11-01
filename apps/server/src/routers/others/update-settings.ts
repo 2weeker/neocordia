@@ -1,5 +1,6 @@
 import {
   ActivityLogType,
+  LOGIN_BACKGROUND_DIM_MAX,
   Permission,
   RETENTION_MAX_COUNT,
   RETENTION_MAX_DAYS,
@@ -34,7 +35,13 @@ const updateSettingsRoute = protectedProcedure
       messageRetentionMaxAgeDays: zRetentionDays.optional(),
       dmRetentionMaxCount: zRetentionCount.optional(),
       dmRetentionMaxAgeDays: zRetentionDays.optional(),
-      logRetentionDays: zRetentionDays.optional()
+      logRetentionDays: zRetentionDays.optional(),
+      loginBackgroundDim: z
+        .number()
+        .int()
+        .min(0)
+        .max(LOGIN_BACKGROUND_DIM_MAX)
+        .optional()
     })
   )
   .mutation(async ({ input, ctx }) => {
@@ -59,7 +66,8 @@ const updateSettingsRoute = protectedProcedure
       messageRetentionMaxAgeDays: input.messageRetentionMaxAgeDays,
       dmRetentionMaxCount: input.dmRetentionMaxCount,
       dmRetentionMaxAgeDays: input.dmRetentionMaxAgeDays,
-      logRetentionDays: input.logRetentionDays
+      logRetentionDays: input.logRetentionDays,
+      loginBackgroundDim: input.loginBackgroundDim
     });
 
     void publishSettings();

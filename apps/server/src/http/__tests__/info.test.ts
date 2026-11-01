@@ -12,7 +12,13 @@ describe('/info', () => {
 
     const data = (await response.json()) as TServerInfo;
 
-    expect(Object.keys(data).sort()).toEqual(['description', 'logo', 'name']);
+    expect(Object.keys(data).sort()).toEqual([
+      'description',
+      'loginBackground',
+      'loginBackgroundDim',
+      'logo',
+      'name'
+    ]);
     expect(data.name).toBe('Test Server');
     expect(data.description).toBe('Test server description');
   });

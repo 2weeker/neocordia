@@ -2,6 +2,7 @@ import { useForm } from '@/hooks/use-form';
 import { getTRPCClient } from '@/lib/trpc';
 import {
     DELETED_USER_IDENTITY_AND_NAME,
+    LOGIN_BACKGROUND_DIM_DEFAULT,
     parseTrpcErrors,
     STORAGE_DEFAULT_MAX_AVATAR_SIZE,
     STORAGE_DEFAULT_MAX_BANNER_SIZE,
@@ -34,7 +35,8 @@ export const useAdminGeneral = () => {
         name: '',
         description: '',
         directMessagesEnabled: true,
-        gamesEnabled: true
+        gamesEnabled: true,
+        loginBackgroundDim: LOGIN_BACKGROUND_DIM_DEFAULT
     });
 
     const {
@@ -54,7 +56,8 @@ export const useAdminGeneral = () => {
             name: data.name,
             description: data.description ?? '',
             directMessagesEnabled: data.directMessagesEnabled ?? true,
-            gamesEnabled: data.gamesEnabled ?? true
+            gamesEnabled: data.gamesEnabled ?? true,
+            loginBackgroundDim: data.loginBackgroundDim
         });
     }, [data]);
 
@@ -66,7 +69,8 @@ export const useAdminGeneral = () => {
                 name: settings.name,
                 description: settings.description,
                 directMessagesEnabled: settings.directMessagesEnabled,
-                gamesEnabled: settings.gamesEnabled
+                gamesEnabled: settings.gamesEnabled,
+                loginBackgroundDim: settings.loginBackgroundDim
             });
             // refresh the cached query so reopening settings reflects what was
             // saved (staleTime is 30s, so the cache would otherwise serve the
@@ -93,7 +97,8 @@ export const useAdminGeneral = () => {
         errors,
         onChange,
         logo: data?.logo ?? null,
-        shareBanner: data?.shareBanner ?? null
+        shareBanner: data?.shareBanner ?? null,
+        loginBackground: data?.loginBackground ?? null
     };
 };
 
