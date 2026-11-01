@@ -4,7 +4,7 @@ import { memo } from 'react';
 const DebugInfo = memo(() => {
     useStrictEffect(() => {
         console.log(
-            '%c CAESAR ',
+            '%c NEOCORDIA ',
             `
             font: 900 64px/1 ui-sans-serif, system-ui, -apple-system, sans-serif;
             letter-spacing: 8px;

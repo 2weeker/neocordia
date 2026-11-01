@@ -7,7 +7,7 @@ import { describe, expect, test } from 'vite-plus/test';
 const HTML = `<!doctype html>
 <html>
 <head>
-  <title>Caesar</title>
+  <title>Neocordia</title>
 </head>
 <body></body>
 </html>`;
@@ -46,7 +46,7 @@ describe('renderShareMeta', () => {
     const html = render();
 
     expect(html).toContain('<title>Night Owls</title>');
-    expect(html).not.toContain('<title>Caesar</title>');
+    expect(html).not.toContain('<title>Neocordia</title>');
     expect(meta(html, 'og:title')).toBe('Night Owls');
     expect(meta(html, 'twitter:title')).toBe('Night Owls');
     expect(meta(html, 'og:site_name')).toBe('Night Owls');
@@ -68,7 +68,7 @@ describe('renderShareMeta', () => {
 
   test('falls back to a join line without a description', () => {
     expect(meta(render({ description: '' }), 'og:description')).toBe(
-      'Join Night Owls on Caesar.'
+      'Join Night Owls on Neocordia.'
     );
   });
 
