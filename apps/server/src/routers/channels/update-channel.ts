@@ -3,6 +3,7 @@ import { channels } from '@caesar/shared/db/schema';
 import { db } from '@server/db';
 import { publishChannel } from '@server/db/publishers';
 import { isDirectMessageChannel } from '@server/db/queries/dms';
+import { clearShowcaseCache } from '@server/db/queries/showcase';
 import { enqueueActivityLog } from '@server/queues/activity-log';
 import { invariant } from '@server/utils/invariant';
 import { protectedProcedure } from '@server/utils/trpc';
@@ -15,7 +16,8 @@ const updateChannelRoute = protectedProcedure
       channelId: z.number().min(1),
       name: z.string().min(2).max(27).optional(),
       topic: z.string().max(128).nullable().optional(),
-      private: z.boolean().optional()
+      private: z.boolean().optional(),
+      showcase: z.boolean().optional()
     })
   )
   .mutation(async ({ ctx, input }) => {
@@ -34,16 +36,28 @@ const updateChannelRoute = protectedProcedure
       .where(eq(channels.id, input.channelId))
       .get();
 
+    const willBePrivate = input.private ?? oldChannel?.private ?? false;
+
+    invariant(!(input.showcase && willBePrivate), {
+      code: 'BAD_REQUEST',
+      message: 'Private channels cannot be showcased'
+    });
+
     const updatedChannel = await db
       .update(channels)
       .set({
         name: input.name,
         topic: input.topic,
-        private: input.private
+        private: input.private,
+        // going private always ends the showcase: the login page must
+        // never reflect a channel outsiders aren't meant to see
+        showcase: willBePrivate ? false : input.showcase
       })
       .where(eq(channels.id, input.channelId))
       .returning()
       .get();
+
+    clearShowcaseCache();
 
     // privacy setting changed
     const ensureUserAccess = updatedChannel.private !== oldChannel?.private;

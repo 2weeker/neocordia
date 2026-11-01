@@ -1102,4 +1102,62 @@ describe('channels router', () => {
       })
     ).rejects.toThrow('Cannot delete DM channel permissions');
   });
+
+  test('admins can showcase a public channel and turn it off again', async () => {
+    const { caller } = await initTest();
+
+    await caller.channels.update({ channelId: 1, showcase: true });
+    expect((await caller.channels.get({ channelId: 1 })).showcase).toBe(true);
+
+    await caller.channels.update({ channelId: 1, showcase: false });
+    expect((await caller.channels.get({ channelId: 1 })).showcase).toBe(false);
+  });
+
+  test('channels are not showcased by default', async () => {
+    const { caller } = await initTest();
+
+    expect((await caller.channels.get({ channelId: 1 })).showcase).toBe(false);
+  });
+
+  test('non-admins cannot showcase a channel', async () => {
+    const { caller } = await initTest(2);
+
+    await expect(
+      caller.channels.update({ channelId: 1, showcase: true })
+    ).rejects.toThrow('Insufficient permissions');
+  });
+
+  test('a private channel cannot be showcased', async () => {
+    const { caller } = await initTest();
+
+    await caller.channels.update({ channelId: 1, private: true });
+
+    await expect(
+      caller.channels.update({ channelId: 1, showcase: true })
+    ).rejects.toThrow('Private channels cannot be showcased');
+
+    await expect(
+      caller.channels.update({ channelId: 1, private: true, showcase: true })
+    ).rejects.toThrow('Private channels cannot be showcased');
+  });
+
+  test('making a showcased channel private takes it off the showcase', async () => {
+    const { caller } = await initTest();
+
+    await caller.channels.update({ channelId: 1, showcase: true });
+    await caller.channels.update({ channelId: 1, private: true });
+
+    const channel = await caller.channels.get({ channelId: 1 });
+
+    expect(channel.private).toBe(true);
+    expect(channel.showcase).toBe(false);
+  });
+
+  test('a DM channel cannot be showcased', async () => {
+    const { caller } = await initTest(1);
+
+    await expect(
+      caller.channels.update({ channelId: 3, showcase: true })
+    ).rejects.toThrow('Cannot update DM channels');
+  });
 });

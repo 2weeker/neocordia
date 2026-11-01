@@ -107,3 +107,16 @@ export type TDirectMessageConversation = {
   lastMessageAt: number;
   ephemeralMs: number | null;
 };
+
+// public login-page showcase: only the scrambled *shape* of a message
+export type TShowcaseItem = {
+  key: string;
+  channel: string;
+  authorCode: string;
+  alias: string;
+  text: string;
+  attachments: number;
+  createdAt: number;
+};
+
+export type TShowcaseFeed = { items: TShowcaseItem[] };

@@ -42,7 +42,8 @@ const rateLimiterDefaults = {
   changeAvatar: { maxRequests: 10, windowMs: 60_000 },
   changeBanner: { maxRequests: 10, windowMs: 60_000 },
   playSoundboard: { maxRequests: 30, windowMs: 60_000 },
-  e2eeSessionKey: { maxRequests: 20, windowMs: 60_000 }
+  e2eeSessionKey: { maxRequests: 20, windowMs: 60_000 },
+  showcase: { maxRequests: 30, windowMs: 60_000 }
 } satisfies Record<string, TRateLimiter>;
 
 type TRateLimiterName = keyof typeof rateLimiterDefaults;

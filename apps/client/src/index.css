@@ -477,3 +477,41 @@ body {
 .group:fullscreen {
   background: black;
 }
+
+/* login-page showcase: endless vertical scroll of scrambled messages */
+@keyframes showcase-scroll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+.showcase-viewport {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+}
+
+.showcase-track {
+  animation: showcase-scroll linear infinite;
+}
+
+.showcase-track[data-paused='true'] {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-viewport {
+    overflow-y: auto;
+  }
+
+  .showcase-track {
+    animation: none;
+  }
+}

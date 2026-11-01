@@ -58,7 +58,26 @@ const General = memo(({ channelId }: TGeneralProps) => {
                 >
                     <Switch
                         checked={channel.private}
-                        onCheckedChange={(value) => onChange('private', value)}
+                        onCheckedChange={(value) => {
+                            onChange('private', value);
+                            // private channels can't be showcased
+                            if (value) onChange('showcase', false);
+                        }}
+                    />
+                </Group>
+
+                <Group
+                    label="Showcase on login page"
+                    description={
+                        channel.private
+                            ? 'Private channels cannot be showcased.'
+                            : "Visitors who aren't signed in see this channel's recent activity next to the login form. Names, avatars, text and the channel name are all scrambled on the server."
+                    }
+                >
+                    <Switch
+                        checked={channel.showcase}
+                        disabled={channel.private}
+                        onCheckedChange={(value) => onChange('showcase', value)}
                     />
                 </Group>
             </CardContent>

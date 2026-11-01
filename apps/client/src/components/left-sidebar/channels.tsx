@@ -16,6 +16,7 @@ import {
 } from '@/features/server/hooks';
 import { cn } from '@/lib/utils';
 import { ChannelPermission, Permission, type TChannel } from '@caesar/shared';
+import { Tooltip } from '@caesar/ui';
 import { useDroppable } from '@dnd-kit/core';
 import {
     SortableContext,
@@ -23,7 +24,7 @@ import {
     verticalListSortingStrategy
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Hash, Volume2 } from 'lucide-react';
+import { Eye, Hash, Volume2 } from 'lucide-react';
 import { memo, useCallback, useMemo } from 'react';
 import { ChannelContextMenu } from '../context-menus/channel';
 import { UnreadCount } from '../unread-count';
@@ -31,6 +32,20 @@ import { CallTime } from './call-time';
 import { useSelectChannel } from './hooks';
 import { VoiceUser } from './voice-user';
 import { Waveform } from './waveform';
+
+// marks channels whose (scrambled) activity shows on the public login page
+const ShowcaseMark = memo(() => (
+    <Tooltip content="Shown scrambled on the public login page">
+        <span
+            className="ml-1 inline-flex shrink-0 text-muted-foreground"
+            aria-label="Showcased on the login page"
+        >
+            <Eye className="h-3 w-3" />
+        </span>
+    </Tooltip>
+));
+
+ShowcaseMark.displayName = 'ShowcaseMark';
 
 type TVoiceProps = Omit<TItemWrapperProps, 'children'> & {
     channel: TChannel;
@@ -62,6 +77,7 @@ const Voice = memo(({ channel, ...props }: TVoiceProps) => {
                 )}
                 <span className="flex items-center flex-1">
                     <span className="truncate">{channel.name}</span>
+                    {channel.showcase && <ShowcaseMark />}
                     <CallTime channelId={channel.id} />
                 </span>
                 {hasUnreadMention && (
@@ -104,7 +120,10 @@ const Text = memo(({ channel, ...props }: TTextProps) => {
     return (
         <ItemWrapper {...props}>
             <Hash className="h-4 w-4" />
-            <span className="flex-1">{channel.name}</span>
+            <span className="flex flex-1 items-center">
+                {channel.name}
+                {channel.showcase && <ShowcaseMark />}
+            </span>
             {hasUnreadMention && (
                 <span
                     className="ml-1 h-2 w-2 shrink-0 rounded-full bg-red-500"

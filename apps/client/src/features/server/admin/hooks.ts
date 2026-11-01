@@ -123,7 +123,8 @@ export const useAdminChannelGeneral = (channelId: number) => {
                 channelId,
                 name: channel?.name ?? '',
                 topic: channel?.topic ?? null,
-                private: channel?.private ?? false
+                private: channel?.private ?? false,
+                showcase: channel?.showcase ?? false
             });
 
             toast.success('Channel updated');

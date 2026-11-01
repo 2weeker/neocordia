@@ -23,6 +23,7 @@ import { login2faRouteHandler } from './login-2fa';
 import { logoutRouteHandler } from './logout';
 import { publicRouteHandler } from './public';
 import { sessionRefreshRouteHandler } from './session-refresh';
+import { showcaseRouteHandler } from './showcase';
 import { uploadFileRouteHandler } from './upload';
 import { HttpValidationError, PayloadTooLargeError } from './utils';
 
@@ -41,6 +42,7 @@ const routeHandlers: Partial<
     exact: {
       '/healthz': healthRouteHandler,
       '/info': infoRouteHandler,
+      '/showcase': showcaseRouteHandler,
       '/e2ee/session-key': getE2eeSessionKeyRouteHandler
     },
     prefix: {

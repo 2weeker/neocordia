@@ -41,6 +41,7 @@ import {
 } from 'lucide-react';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import { ShowcaseFeed } from './showcase';
 
 type TConnectMode = 'sign-in' | 'sign-up';
 
@@ -342,7 +343,7 @@ const Connect = memo(() => {
     }, [info]);
 
     return (
-        <div className="flex flex-col gap-2 justify-center items-center h-full">
+        <div className="flex flex-col gap-2 justify-center items-center h-full lg:flex-row lg:gap-12">
             <Card className="w-full max-w-sm gap-2">
                 <CardHeader>
                     <CardTitle className="flex flex-col items-center gap-2 text-center">
@@ -562,6 +563,7 @@ const Connect = memo(() => {
                     )}
                 </CardContent>
             </Card>
+            <ShowcaseFeed />
         </div>
     );
 });

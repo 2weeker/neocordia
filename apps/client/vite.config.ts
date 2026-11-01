@@ -34,7 +34,8 @@ export default defineConfig({
             '/session': 'http://localhost:4991',
             '/e2ee': 'http://localhost:4991',
             '/upload': 'http://localhost:4991',
-            '/public': 'http://localhost:4991'
+            '/public': 'http://localhost:4991',
+            '/showcase': 'http://localhost:4991'
         }
     },
     assetsInclude: ['**/*.wasm'],

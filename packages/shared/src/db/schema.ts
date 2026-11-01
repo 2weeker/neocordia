@@ -141,6 +141,8 @@ const channels = sqliteTable(
     fileAccessToken: text('file_access_token').notNull().unique(),
     fileAccessTokenUpdatedAt: integer('file_access_token_updated_at').notNull(),
     private: integer('private', { mode: 'boolean' }).notNull().default(false),
+    // shown (scrambled) on the public login page; never private or DM
+    showcase: integer('showcase', { mode: 'boolean' }).notNull().default(false),
     isDm: integer('is_dm_channel', { mode: 'boolean' })
       .notNull()
       .default(false),
