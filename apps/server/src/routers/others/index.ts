@@ -3,6 +3,7 @@ import { changeLogoRoute } from './change-logo';
 import { onServerSettingsUpdateRoute } from './events';
 import { getBankBalanceRoute } from './get-bank-balance';
 import { getGameHistoryRoute } from './get-game-history';
+import { getRetentionSettingsRoute } from './get-retention-settings';
 import { getSettingsRoute } from './get-settings';
 import { getStorageSettingsRoute } from './get-storage-settings';
 import { handshakeRoute } from './handshake';
@@ -21,6 +22,7 @@ export const othersRouter = t.router({
   onServerSettingsUpdate: onServerSettingsUpdateRoute,
   useSecretToken: useSecretTokenRoute,
   getStorageSettings: getStorageSettingsRoute,
+  getRetentionSettings: getRetentionSettingsRoute,
   getBankBalance: getBankBalanceRoute,
   getGameHistory: getGameHistoryRoute
 });

@@ -4,6 +4,7 @@ import { editMessageRoute } from './edit-message';
 import {
   onMessageDeleteRoute,
   onMessageRoute,
+  onMessagesPrunedRoute,
   onMessageTypingRoute,
   onMessageUpdateRoute
 } from './events';
@@ -32,5 +33,6 @@ export const messagesRouter = t.router({
   onNew: onMessageRoute,
   onUpdate: onMessageUpdateRoute,
   onDelete: onMessageDeleteRoute,
+  onPruned: onMessagesPrunedRoute,
   onTyping: onMessageTypingRoute
 });

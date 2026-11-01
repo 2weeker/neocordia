@@ -164,6 +164,12 @@ export const clearChannelMessages = (channelId: number) => {
     store.dispatch(serverSliceActions.clearChannelMessages({ channelId }));
 };
 
+export const pruneChannelMessages = (channelId: number, beforeId: number) => {
+    store.dispatch(
+        serverSliceActions.pruneChannelMessages({ channelId, beforeId })
+    );
+};
+
 export const setJumpWindow = (
     channelId: number,
     messages: TJoinedMessage[],

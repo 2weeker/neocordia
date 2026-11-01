@@ -268,6 +268,31 @@ export const serverSlice = createSlice({
             state.messagesMap[action.payload.channelId] = [];
             delete state.newerCursorMap[action.payload.channelId];
         },
+        // retention cron: every unpinned message with id <= beforeId is gone
+        pruneChannelMessages: (
+            state,
+            action: PayloadAction<{ channelId: number; beforeId: number }>
+        ) => {
+            const { channelId, beforeId } = action.payload;
+            const messages = state.messagesMap[channelId];
+
+            if (!messages) return;
+
+            const kept = messages.filter((m) => m.pinned || m.id > beforeId);
+
+            state.messagesMap[channelId] = kept;
+
+            // a jump window with nothing newer than the cutoff left in it
+            // would render empty: fall back to the live tail
+            const newerCursor = state.newerCursorMap[channelId];
+
+            if (
+                newerCursor !== undefined &&
+                !kept.some((m) => m.id > beforeId && m.createdAt <= newerCursor)
+            ) {
+                delete state.newerCursorMap[channelId];
+            }
+        },
         setJumpWindow: (
             state,
             action: PayloadAction<{

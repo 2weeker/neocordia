@@ -7,6 +7,7 @@ import { ServerScreenLayout } from '../server-screen-layout';
 import { Emojis } from './emojis';
 import { General } from './general';
 import { Invites } from './invites';
+import { Retention } from './retention';
 import { Roles } from './roles';
 import { Sounds } from './sounds';
 import { Storage } from './storage';
@@ -65,6 +66,12 @@ const ServerSettings = memo(({ close }: TServerSettingsProps) => {
                             Storage
                         </TabsTrigger>
                         <TabsTrigger
+                            value="retention"
+                            disabled={!can(Permission.MANAGE_SETTINGS)}
+                        >
+                            Retention
+                        </TabsTrigger>
+                        <TabsTrigger
                             value="users"
                             disabled={!can(Permission.MANAGE_USERS)}
                         >
@@ -92,6 +99,9 @@ const ServerSettings = memo(({ close }: TServerSettingsProps) => {
                     </TabsContent>
                     <TabsContent value="storage" className="space-y-6">
                         {can(Permission.MANAGE_STORAGE) && <Storage />}
+                    </TabsContent>
+                    <TabsContent value="retention" className="space-y-6">
+                        {can(Permission.MANAGE_SETTINGS) && <Retention />}
                     </TabsContent>
                     <TabsContent value="users" className="space-y-6">
                         {can(Permission.MANAGE_USERS) && <Users />}

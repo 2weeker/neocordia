@@ -2,6 +2,8 @@ export enum ServerEvents {
   NEW_MESSAGE = 'newMessage',
   MESSAGE_UPDATE = 'messageUpdate',
   MESSAGE_DELETE = 'messageDelete',
+  // retention cron: every unpinned message with id <= beforeId is gone
+  MESSAGES_PRUNED = 'messagesPruned',
   MESSAGE_TYPING = 'messageTyping',
 
   USER_JOIN = 'userJoin',

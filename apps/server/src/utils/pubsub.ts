@@ -25,6 +25,10 @@ type Events = {
     messageId: number;
     channelId: number;
   };
+  [ServerEvents.MESSAGES_PRUNED]: {
+    channelId: number;
+    beforeId: number;
+  };
   [ServerEvents.MESSAGE_TYPING]: {
     channelId: number;
     userId: number;

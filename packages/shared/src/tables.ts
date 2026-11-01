@@ -106,6 +106,15 @@ export type TStorageSettings = Pick<
   | 'storageOverflowAction'
 >;
 
+export type TRetentionSettings = Pick<
+  TSettings,
+  | 'messageRetentionMaxCount'
+  | 'messageRetentionMaxAgeDays'
+  | 'dmRetentionMaxCount'
+  | 'dmRetentionMaxAgeDays'
+  | 'logRetentionDays'
+>;
+
 // joined types
 
 type TPublicUser = Pick<

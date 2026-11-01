@@ -6,6 +6,7 @@ import {
     addTypingUser,
     clearChannelMessages,
     deleteMessage,
+    pruneChannelMessages,
     updateMessage
 } from './actions';
 
@@ -38,6 +39,15 @@ const subscribeToMessages = () => {
             console.error('onMessageDelete subscription error:', err)
     });
 
+    const onMessagesPrunedSub = trpc.messages.onPruned.subscribe(undefined, {
+        onData: ({ channelId, beforeId }) => {
+            logDebug('[EVENTS] messages.onPruned', { channelId, beforeId });
+            pruneChannelMessages(channelId, beforeId);
+        },
+        onError: (err) =>
+            console.error('onMessagesPruned subscription error:', err)
+    });
+
     const onDmWipedSub = trpc.dms.onWiped.subscribe(undefined, {
         onData: ({ channelId }: { channelId: number }) => {
             logDebug('[EVENTS] dms.onWiped', { channelId });
@@ -65,6 +75,7 @@ const subscribeToMessages = () => {
         onMessageSub.unsubscribe();
         onMessageUpdateSub.unsubscribe();
         onMessageDeleteSub.unsubscribe();
+        onMessagesPrunedSub.unsubscribe();
         onDmWipedSub.unsubscribe();
         onMessageTypingSub.unsubscribe();
     };

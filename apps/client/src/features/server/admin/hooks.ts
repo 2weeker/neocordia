@@ -13,6 +13,7 @@ import {
     type StorageOverflowAction,
     type TCategory,
     type TChannel,
+    type TRetentionSettings,
     type TStorageSettings,
     type TTrpcErrors
 } from '@caesar/shared';
@@ -278,6 +279,46 @@ export const useAdminRoles = () => {
         errors,
         onChange
     };
+};
+
+export const useAdminRetention = () => {
+    const { values, setValues, setTrpcErrors, onChange } =
+        useForm<TRetentionSettings>({
+            messageRetentionMaxCount: 0,
+            messageRetentionMaxAgeDays: 0,
+            dmRetentionMaxCount: 0,
+            dmRetentionMaxAgeDays: 0,
+            logRetentionDays: 0
+        });
+
+    const {
+        data,
+        isPending: loading,
+        refetch
+    } = useQuery({
+        queryKey: ['admin', 'retention'],
+        queryFn: () => getTRPCClient().others.getRetentionSettings.query()
+    });
+
+    // form state initialized from server data
+    useEffect(() => {
+        if (data) setValues(data);
+    }, [data, setValues]);
+
+    const submit = useCallback(async () => {
+        try {
+            await getTRPCClient().others.updateSettings.mutate(values);
+            // keep the cache in sync with the DB so reopening the tab shows
+            // the saved values, not the pre-save cache
+            await refetch();
+            toast.success('Retention settings updated');
+        } catch (error) {
+            console.error('Error updating retention settings:', error);
+            setTrpcErrors(error);
+        }
+    }, [values, setTrpcErrors, refetch]);
+
+    return { values, loading, submit, onChange };
 };
 
 export const useAdminStorage = () => {

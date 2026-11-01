@@ -74,7 +74,21 @@ const settings = sqliteTable(
       }
     ).notNull(),
     storageSpaceQuotaByUser: integer('storage_space_quota_by_user').notNull(),
-    storageOverflowAction: text('storage_overflow_action').notNull()
+    storageOverflowAction: text('storage_overflow_action').notNull(),
+    // retention: 0 = keep forever. Counts are per channel; pinned
+    // messages are exempt and never count toward the cap.
+    messageRetentionMaxCount: integer('message_retention_max_count')
+      .notNull()
+      .default(0),
+    messageRetentionMaxAgeDays: integer('message_retention_max_age_days')
+      .notNull()
+      .default(0),
+    dmRetentionMaxCount: integer('dm_retention_max_count').notNull().default(0),
+    dmRetentionMaxAgeDays: integer('dm_retention_max_age_days')
+      .notNull()
+      .default(0),
+    // logins + activity_log
+    logRetentionDays: integer('log_retention_days').notNull().default(0)
   },
   (t) => [
     index('settings_server_idx').on(t.serverId),

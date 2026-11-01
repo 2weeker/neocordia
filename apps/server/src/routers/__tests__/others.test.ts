@@ -217,4 +217,60 @@ describe('others router', () => {
       caller.others.useSecretToken({ token: 'guess-5' })
     ).rejects.toThrow('Too many requests. Please try again shortly.');
   });
+
+  test('retention settings default to keep forever', async () => {
+    const { caller } = await initTest(1);
+
+    expect(await caller.others.getRetentionSettings()).toEqual({
+      messageRetentionMaxCount: 0,
+      messageRetentionMaxAgeDays: 0,
+      dmRetentionMaxCount: 0,
+      dmRetentionMaxAgeDays: 0,
+      logRetentionDays: 0
+    });
+  });
+
+  test('admins can update retention settings', async () => {
+    const { caller } = await initTest(1);
+    const retention = {
+      messageRetentionMaxCount: 500,
+      messageRetentionMaxAgeDays: 90,
+      dmRetentionMaxCount: 1000,
+      dmRetentionMaxAgeDays: 30,
+      logRetentionDays: 90
+    };
+
+    // warm the settings cache: the update must still show on the next read
+    await caller.others.getRetentionSettings();
+    await caller.others.updateSettings(retention);
+
+    expect(await caller.others.getRetentionSettings()).toEqual(retention);
+  });
+
+  test('non-admins cannot read or change retention settings', async () => {
+    const { caller } = await initTest(2);
+
+    await expect(caller.others.getRetentionSettings()).rejects.toThrow(
+      'Insufficient permissions'
+    );
+    await expect(
+      caller.others.updateSettings({ messageRetentionMaxCount: 1 })
+    ).rejects.toThrow('Insufficient permissions');
+  });
+
+  test('retention settings reject negative and fractional values', async () => {
+    const { caller } = await initTest(1);
+
+    await expect(
+      caller.others.updateSettings({ messageRetentionMaxCount: -1 })
+    ).rejects.toThrow();
+    await expect(
+      caller.others.updateSettings({ logRetentionDays: 1.5 })
+    ).rejects.toThrow();
+
+    expect(await caller.others.getRetentionSettings()).toMatchObject({
+      messageRetentionMaxCount: 0,
+      logRetentionDays: 0
+    });
+  });
 });

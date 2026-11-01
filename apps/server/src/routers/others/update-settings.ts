@@ -1,6 +1,8 @@
 import {
   ActivityLogType,
   Permission,
+  RETENTION_MAX_COUNT,
+  RETENTION_MAX_DAYS,
   StorageOverflowAction
 } from '@caesar/shared';
 import { updateSettings } from '@server/db/mutations/server';
@@ -8,6 +10,9 @@ import { publishSettings } from '@server/db/publishers';
 import { enqueueActivityLog } from '@server/queues/activity-log';
 import { protectedProcedure } from '@server/utils/trpc';
 import { z } from 'zod';
+
+const zRetentionCount = z.number().int().min(0).max(RETENTION_MAX_COUNT);
+const zRetentionDays = z.number().int().min(0).max(RETENTION_MAX_DAYS);
 
 const updateSettingsRoute = protectedProcedure
   .input(
@@ -24,7 +29,12 @@ const updateSettingsRoute = protectedProcedure
       storageMaxBannerSize: z.number().min(0).optional(),
       storageMaxFilesPerMessage: z.number().int().min(0).optional(),
       storageSpaceQuotaByUser: z.number().min(0).optional(),
-      storageOverflowAction: z.enum(StorageOverflowAction).optional()
+      storageOverflowAction: z.enum(StorageOverflowAction).optional(),
+      messageRetentionMaxCount: zRetentionCount.optional(),
+      messageRetentionMaxAgeDays: zRetentionDays.optional(),
+      dmRetentionMaxCount: zRetentionCount.optional(),
+      dmRetentionMaxAgeDays: zRetentionDays.optional(),
+      logRetentionDays: zRetentionDays.optional()
     })
   )
   .mutation(async ({ input, ctx }) => {
@@ -44,7 +54,12 @@ const updateSettingsRoute = protectedProcedure
       storageMaxBannerSize: input.storageMaxBannerSize,
       storageMaxFilesPerMessage: input.storageMaxFilesPerMessage,
       storageSpaceQuotaByUser: input.storageSpaceQuotaByUser,
-      storageOverflowAction: input.storageOverflowAction
+      storageOverflowAction: input.storageOverflowAction,
+      messageRetentionMaxCount: input.messageRetentionMaxCount,
+      messageRetentionMaxAgeDays: input.messageRetentionMaxAgeDays,
+      dmRetentionMaxCount: input.dmRetentionMaxCount,
+      dmRetentionMaxAgeDays: input.dmRetentionMaxAgeDays,
+      logRetentionDays: input.logRetentionDays
     });
 
     void publishSettings();
